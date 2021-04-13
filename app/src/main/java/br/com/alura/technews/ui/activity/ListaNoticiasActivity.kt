@@ -3,6 +3,8 @@ package br.com.alura.technews.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import br.com.alura.technews.R
@@ -11,6 +13,8 @@ import br.com.alura.technews.model.Noticia
 import br.com.alura.technews.repository.NoticiaRepository
 import br.com.alura.technews.ui.activity.extensions.mostraErro
 import br.com.alura.technews.ui.recyclerview.adapter.ListaNoticiasAdapter
+import br.com.alura.technews.ui.viewmodel.ListaNoticiasViewModel
+import br.com.alura.technews.ui.viewmodel.factory.ListaNoticiasViewModelFactory
 import kotlinx.android.synthetic.main.activity_lista_noticias.*
 
 private const val TITULO_APPBAR = "Notícias"
@@ -18,11 +22,14 @@ private const val MENSAGEM_FALHA_CARREGAR_NOTICIAS = "Não foi possível carrega
 
 class ListaNoticiasActivity : AppCompatActivity() {
 
-    private val repository by lazy {
-        NoticiaRepository(AppDatabase.getInstance(this).noticiaDAO)
-    }
     private val adapter by lazy {
         ListaNoticiasAdapter(context = this)
+    }
+    private val viewModel by lazy {
+        val repository = NoticiaRepository(AppDatabase.getInstance(this).noticiaDAO)
+        val factory = ListaNoticiasViewModelFactory(repository)
+        val provedor = ViewModelProvider(this, factory)
+        provedor.get(ListaNoticiasViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,11 +63,15 @@ class ListaNoticiasActivity : AppCompatActivity() {
     }
 
     private fun buscaNoticias() {
-        repository.buscaTodos(
-            quandoSucesso = {
-                adapter.atualiza(it)
-            }, quandoFalha = {
-                mostraErro(MENSAGEM_FALHA_CARREGAR_NOTICIAS)
+        viewModel.buscaTodos().observe(
+            this,
+            Observer { resourse ->
+                resourse.dado?.let {
+                    adapter.atualiza(it)
+                }
+                resourse.erro?.let {
+                    mostraErro(MENSAGEM_FALHA_CARREGAR_NOTICIAS)
+                }
             }
         )
     }
