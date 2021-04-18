@@ -38,10 +38,6 @@ class ListaNoticiasActivity : AppCompatActivity() {
         title = TITULO_APPBAR
         configuraRecyclerView()
         configuraFabAdicionaNoticia()
-    }
-
-    override fun onResume() {
-        super.onResume()
         buscaNoticias()
     }
 
