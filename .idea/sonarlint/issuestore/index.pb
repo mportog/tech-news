@@ -39,3 +39,9 @@ h
 8app/src/main/java/br/com/alura/technews/model/Noticia.kt,8\3\83a73c383da9e31fcbf1c0b6553d8eec94217ee8
 r
 Bapp/src/main/java/br/com/alura/technews/database/dao/NoticiaDAO.kt,4\1\4125df3e9757bae2ae85973158d27793a2bc4707
+P
+ app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
+i
+9app/src/main/java/br/com/alura/technews/AppApplication.kt,5\5\557e2b9d9fc688b13eb0027e08bd3afc4ee2ff06
+p
+@app/src/main/java/br/com/alura/technews/di/modules/AppModules.kt,3\d\3d52a1036b8ebda76e4eaa6273cf86c60a1edc47
